@@ -1,6 +1,6 @@
 // read in data and call visualize
 $(function() {
-  d3.csv("").then(function(data) {
+  d3.csv("FamilyTrees.csv").then(function(data) {
     visualize(data);
   })
 })
