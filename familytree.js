@@ -8,7 +8,6 @@ $(function() {
 var visualize = function(data) {
   // color pallete
   var colors = [
-    "#55DDE0",
     "#33658A",
     "#2F4858",
     "#F6AE2D",
@@ -20,7 +19,7 @@ var visualize = function(data) {
   // boilerplate setup
   var margin = { top: 50, right: 50, bottom: 50, left: 50 },
      width = 1080 - margin.left - margin.right,
-     height = 960 - margin.top - margin.bottom;
+     height = 650 - margin.top - margin.bottom;
 
   var svg = d3.select('#chart')
   .append("svg")
@@ -46,6 +45,26 @@ var visualize = function(data) {
   // debug
   console.log(nodes);
 
+  // function to recursively add family attribute to all decendant nodes
+  var addFamily = function(node, fam) {
+    // add family attribute to current node
+    node.family = fam;
+
+    // iterate through node's children & call recursively
+    if (node.children) {
+      for (let i = 0; i < node.children.length; i++) {
+        addFamily(node.children[i], fam);
+      }
+    }
+  }
+
+  // get array of family root nodes & give all nodes a family attribute
+  var founders = [];
+  for (let i = 0; i < nodes.children.length; i++) {
+    founders.push(nodes.children[i].data.id);
+    addFamily(nodes.children[i], nodes.children[i].data.id);
+  }
+
   // map data to nodes
   var node = g.selectAll(".node")
     .data(nodes.descendants())
@@ -53,27 +72,37 @@ var visualize = function(data) {
     .attr("class", "node")
     .attr("transform", d => "translate(" + d.x + "," + d.y + ")");
 
-  // map data to links and display links
-  // TODO: fix d function
+  // map data to links & display links
   var link = g.selectAll(".link")
     .data(nodes.descendants().slice(1))
-    .enter().append("path")
+    .enter().append("line")
     .attr("class", "link")
-    .style("stroke", "black")
-    .attr("d", d => {
-      return "M" + d.x + "," + d.y
-        + "C" + (d.x + d.parent.x) / 2 + "," + d.y
-        + " " + (d.x + d.parent.x) / 2 + "," + d.parent.y
-        + " " + d.parent.x + "," + d.parent.y;
+    .attr('x1', function(d) {
+      return d.parent.x;
+    })
+    .attr('y1', function(d) {
+      return d.parent.y;
+    })
+    .attr('x2', function(d) {
+      return d.x;
+    })
+    .attr('y2', function(d) {
+      return d.y;
+    })
+    .attr("stroke", function(d) {
+      if (d.parent.family) {
+        return colors[founders.indexOf(d.parent.family) % colors.length];
+      }
     });
 
   // display nodes
   node.append("circle")
     .attr("r", 4)
-    .style("fill", "black");
+    .style("fill", function(d) {
+      return colors[founders.indexOf(d.family) % colors.length];
+    });
 
   // TODO: hide root note
-  // TODO: add colors depending on subroot
   // TODO: add hover with name
   // TODO: add label above each family
 }
