@@ -69,7 +69,11 @@ var visualize = function(data) {
   var tip = d3.tip()
     .attr("class", "d3-tip")
     .html(function(d) {
-      return "<div>" + d.data.id + "</div>";
+      if (d.family) {
+        return "<div>" + d.data.id + "</div>";
+      } else {
+        return "";
+      }
     });
   g.call(tip);
 
@@ -132,6 +136,5 @@ var visualize = function(data) {
     .on("mouseover", tip.show)
     .on("mouseout", tip.hide);
 
-  // TODO: add hover with name (remember to move founder node from hover)
   // TODO: add label above each family
 }
