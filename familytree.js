@@ -74,6 +74,11 @@ var visualize = function(data) {
       } else {
         return "";
       }
+    })
+    .style("opacity", function(d) {
+      if (!d.family) {
+        return 0;
+      }
     });
   g.call(tip);
 
