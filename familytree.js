@@ -17,9 +17,9 @@ var visualize = function(data) {
   ];
 
   // boilerplate setup
-  var margin = { top: 50, right: 50, bottom: 50, left: 50 },
+  var margin = { top: 30, right: 50, bottom: 30, left: 50 },
      width = 1080 - margin.left - margin.right,
-     height = 650 - margin.top - margin.bottom;
+     height = 700 - margin.top - margin.bottom;
 
   var svg = d3.select('#chart')
   .append("svg")
@@ -65,12 +65,25 @@ var visualize = function(data) {
     addFamily(nodes.children[i], nodes.children[i].data.id);
   }
 
-  // map data to nodes
+  // find y distance between "founder node" and its children
+  if (nodes.children) {
+    var diff = nodes.children[0].y - nodes.y;
+  } else {
+    var diff = 0;
+  }
+
+  // map data to nodes (which are shifted up to hide founder node)
   var node = g.selectAll(".node")
     .data(nodes.descendants())
     .enter().append("g")
     .attr("class", "node")
-    .attr("transform", d => "translate(" + d.x + "," + d.y + ")");
+    .attr("transform", function(d) {
+      if (d.family) {
+        return "translate(" + d.x + "," + (d.y - diff) + ")";
+      } else {
+        return "translate(" + d.x + "," + d.y + ")";
+      }
+    });
 
   // map data to links & display links
   var link = g.selectAll(".link")
@@ -81,13 +94,13 @@ var visualize = function(data) {
       return d.parent.x;
     })
     .attr('y1', function(d) {
-      return d.parent.y;
+      return (d.parent.y - diff);
     })
     .attr('x2', function(d) {
       return d.x;
     })
     .attr('y2', function(d) {
-      return d.y;
+      return (d.y - diff);
     })
     .attr("stroke", function(d) {
       if (d.parent.family) {
@@ -95,14 +108,20 @@ var visualize = function(data) {
       }
     });
 
-  // display nodes
+  // display nodes, shifted up to hide founder node (which is rendered clear to hide it)
   node.append("circle")
     .attr("r", 4)
     .style("fill", function(d) {
-      return colors[founders.indexOf(d.family) % colors.length];
+      if (d.family) {
+        return colors[founders.indexOf(d.family) % colors.length];
+      }
+    })
+    .style("opacity", function(d) {
+      if (!d.family) {
+        return 0;
+      }
     });
 
-  // TODO: hide root note
-  // TODO: add hover with name
+  // TODO: add hover with name (remember to move founder node from hover)
   // TODO: add label above each family
 }
