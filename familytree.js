@@ -148,6 +148,13 @@ var visualize = function(data) {
   }
 
   var colorPath = function(path) {
+    // find all already highlighted and unhighlight
+    var currHighlighted = nodes.descendants().filter(d => d.highlight);
+    for (let i = 0; i < currHighlighted.length; i++) {
+      currHighlighted[i].highlight = false;
+    }
+
+    // highlight new path
     for (let i = 0; i < path.length; i++) {
       path[i].highlight = true;
     }
