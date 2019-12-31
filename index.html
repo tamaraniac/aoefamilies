@@ -4,6 +4,7 @@
     <title>Family Trees of the Alpha Omega Epsilon Theta Chapter</title>
     <!-- Custom CSS -->
     <link href="style.css" rel="stylesheet" type="text/css">
+    <link href="src/select2.css" rel="stylesheet" type="text/css">
 
     <!-- jQuery and lodash -->
     <script src="src/jquery-3.3.1.slim.min.js"></script>
@@ -14,15 +15,24 @@
     <script src="src/d3.tip.js"></script>
     <script src="src/d3-hierarchy.min.js"></script>
 
+    <!-- select2 -->
+    <script src="src/select2.full.min.js"></script>
+
     <!-- Our visualization code -->
     <script src="familytree.js"></script>
     <!-- <link rel="stylesheet" href="https://rawgithub.com/Caged/d3-tip/master/examples/example-styles.css"> -->
   </head>
   <body>
-    <div class="container">
-      <!-- Our d3.js visualization will appear in #chart -->
-      <div id="chart"></div>
-    </div>
+    <main class="content" id="content">
+      <h1>Family Trees of the Alpha Omega Epsilon Theta Chapter</h1>
+      <div id="authors">Created by <a href="http://tamaraniac.com">Tamara Nelson-Fromm</a>. (<a href="https://github.com/tamaraniac/aoefamilies">Fork it on GitHub</a>)</div>
+      <div id="descrip">Hover over a circle to see who it represents, and search for someone to see their location and line. Hover over the top circle in each tree to determine its family.</div>
+      <div id="search"></div>
+      <div class="container">
+        <!-- Our d3.js visualization will appear in #chart -->
+        <div id="chart"></div>
+      </div>
+    </main>
   </body>
 
 </html>
