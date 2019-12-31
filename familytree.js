@@ -65,6 +65,14 @@ var visualize = function(data) {
     addFamily(nodes.children[i], nodes.children[i].data.id);
   }
 
+  // create tooltip
+  var tip = d3.tip()
+    .attr("class", "d3-tip")
+    .html(function(d) {
+      return "<div>" + d.data.id + "</div>";
+    });
+  g.call(tip);
+
   // find y distance between "founder node" and its children
   if (nodes.children) {
     var diff = nodes.children[0].y - nodes.y;
@@ -120,7 +128,9 @@ var visualize = function(data) {
       if (!d.family) {
         return 0;
       }
-    });
+    })
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide);
 
   // TODO: add hover with name (remember to move founder node from hover)
   // TODO: add label above each family
