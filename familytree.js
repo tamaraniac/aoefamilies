@@ -15,7 +15,7 @@ var visualize = function(data) {
     "#746F72",
     "#007EA7"
   ];
-  var highlightColor = "#00A8E8";
+  var highlightColor = "#36C6FF";
 
   // boilerplate setup
   var margin = { top: 30, right: 50, bottom: 30, left: 50 },
@@ -49,24 +49,11 @@ var visualize = function(data) {
     // update node color if it becomes highlighted
     g.selectAll(".node")
       .data(nodes.descendants())
-      .attr("fill", function(d) {
+      .style("fill", function(d) {
         if (d.highlight) {
           return highlightColor;
         } else {
           return colors[founders.indexOf(d.family) % colors.length];
-        }
-      });
-
-    // map data to nodes (which are shifted up to hide founder node)
-    var node = g.selectAll(".node")
-      .data(nodes.descendants())
-      .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", function(d) {
-        if (d.family) {
-          return "translate(" + d.x + "," + (d.y - diff) + ")";
-        } else {
-          return "translate(" + d.x + "," + d.y + ")";
         }
       });
 
@@ -93,18 +80,31 @@ var visualize = function(data) {
         }
       });
 
-    // display nodes, shifted up to hide founder node (which is rendered clear to hide it)
-    node.append("circle")
-      .attr("r", 4)
-      .attr("fill", function(d) {
-        return colors[founders.indexOf(d.family) % colors.length];
+    // map data to nodes (which are shifted up to hide founder node) & display nodes, shifted up to hide founder node (which is rendered clear to hide it)
+    var node = g.selectAll(".node")
+      .data(nodes.descendants())
+      .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) {
+        if (d.family) {
+          return "translate(" + d.x + "," + (d.y - diff) + ")";
+        } else {
+          return "translate(" + d.x + "," + d.y + ")";
+        }
       })
+      .append("circle")
+      .attr("r", 4)
       .style("opacity", function(d) {
         if (!d.family) {
           return 0;
         }
       })
-      .on("mouseover", tip.show)
+      .style("fill", function(d) {
+        return colors[founders.indexOf(d.family) % colors.length];
+      });
+
+    // add tooltip to nodes
+    node.on("mouseover", tip.show)
       .on("mouseout", tip.hide);
   };
 
