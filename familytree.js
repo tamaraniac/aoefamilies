@@ -50,7 +50,7 @@ var visualize = function(data) {
     g.selectAll(".node")
       .data(nodes.descendants())
       .style("fill", function(d) {
-        if (d.highlight) {
+        if (d.found) {
           return highlightColor;
         } else {
           return colors[founders.indexOf(d.family) % colors.length];
@@ -173,6 +173,7 @@ var visualize = function(data) {
     // find node with name
     let n = findNode(nodes, e.params.data.text);
 		if (n) {
+      n.found = true;
       var path = nodes.path(n);
       path.shift();
 			colorPath(path);
