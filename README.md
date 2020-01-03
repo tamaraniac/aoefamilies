@@ -10,12 +10,12 @@ All members to be displayed must be inserted as a row in a CSV with the columns 
 
 For example, if your chapter has two founders Anna and Grace, and Grace has a little named Kat, your csv would read as follows:
 
-| Little  | Big     |   |   |   |
-|---------|---------|---|---|---|
-| Founder |         |   |   |   |
-| Anna    | Founder |   |   |   |
-| Grace   | Founder |   |   |   |
-| Kat     | Grace   |   |   |   |
+| Little  | Big     |
+|---------|---------|
+| Founder |         |
+| Anna    | Founder |
+| Grace   | Founder |
+| Kat     | Grace   |
 
 This csv should be named `FamilyTrees.csv` and inserted in the main directory.
 
