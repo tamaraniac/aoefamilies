@@ -1,6 +1,8 @@
 # A.O.E. families
 ## Background
-Created to display the family trees of University Of Illinois' Theta Chapter of Alpha Omega Epsilon. All seperated "families" are displayed in different colors, and all nodes are searchable to find the location of a specific member.
+Created to display the family trees of University Of Illinois' Theta Chapter of Alpha Omega Epsilon. All separated "families" are displayed in different colors, and all nodes are searchable to find the location of a specific member.
+
+![demo image](demo.png)
 
 ## To Fork
 
