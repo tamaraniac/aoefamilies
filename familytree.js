@@ -170,6 +170,8 @@ var visualize = function(data) {
 
   // attach search box listener
   $("#search").on("select2:select", function(e) {
+    document.getElementById("select2-search-container").textContent=e.params.data.text;
+
     // find node with name
     let n = findNode(nodes, e.params.data.text);
 		if (n) {
